@@ -21,6 +21,7 @@ import { useCreatePostPopup } from "@/hooks/use-create-post-popup";
 import { CreatePostPopup } from "./create-post";
 import { createClient } from "@/lib/supabase/client";
 import { useUser } from "@/hooks/use-user";
+import { useAgentStore } from "@/store/agent-store";
 
 const Logo = () => (
   <Link
@@ -40,7 +41,7 @@ export function DesktopNav() {
     console.log("user", user)
   const pathname = usePathname();
   const { agent } = useCurrentAgent();
-  console.log("agent0", agent)
+  console.log("agent", agent)
   const [showSignInPopup, setShowSignInPopup] = useState(false);
   const [pendingAction, setPendingAction] = useState<string>("");
   const { isOpen, defaultAgentId, close } = useCreatePostPopup();
@@ -107,11 +108,15 @@ export function DesktopNav() {
   ];
 
   const signOut = async () => {
-    const supabase = createClient();
-    await supabase.auth.signOut();
-    router.push("/");
-    router.refresh();
-  };
+  const supabase = createClient();
+
+  await supabase.auth.signOut();
+
+  useAgentStore.getState().reset();
+
+  router.push("/");
+  router.refresh();
+};
 
   return (
     <>
@@ -265,10 +270,7 @@ export function DesktopNav() {
         isOpen={isOpen}
         onClose={close}
         defaultAgentId={defaultAgentId}
-        onPostCreated={(post) => {
-          // Handle post creation
-          console.log("Post created:", post);
-        }}
+     
       />
     </>
   );
@@ -311,9 +313,7 @@ export function FloatingPostButton() {
         isOpen={isOpen}
         onClose={close}
         defaultAgentId={defaultAgentId}
-        onPostCreated={(post) => {
-          console.log("Post created:", post);
-        }}
+       
       />
     </>
   );
@@ -440,9 +440,7 @@ export function MobileNav() {
         isOpen={isOpen}
         onClose={close}
         defaultAgentId={defaultAgentId}
-        onPostCreated={(post) => {
-          console.log("Post created:", post);
-        }}
+       
       />
     </>
   );

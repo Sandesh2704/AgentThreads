@@ -1,49 +1,57 @@
-// hooks/use-current-agent.ts
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { useUser } from "./use-user";
-import type { Agent } from "@/types";
+import { useAgentStore } from "@/store/agent-store";
 
 export function useCurrentAgent() {
-  const { user, loading } = useUser();
-  const [agent, setAgent] = useState<Agent | null>(null);
-  const [agentLoading, setAgentLoading] = useState(true);
+  const { user, loading: userLoading } = useUser();
 
-  console.log("user", user)
+  const {
+    agent,
+    loading,
+    setAgent,
+    setLoading,
+  } = useAgentStore();
 
   useEffect(() => {
-    if (loading) return;
+    if (userLoading) return;
 
     if (!user) {
       setAgent(null);
-      setAgentLoading(false);
+      setLoading(false);
       return;
     }
 
+    // Already loaded
+    if (agent?.user_id === user.id) {
+      return;
+    }
 
+    const load = async () => {
+      setLoading(true);
 
-    
-const load = async () => {
-  const supabase = createClient();
+      const supabase = createClient();
 
-  console.log("Searching for user_id =", user.id);
+      const { data, error } = await supabase
+        .from("agents")
+        .select("*")
+        .eq("user_id", user.id)
+        .single();
 
-  const { data, error } = await supabase
-    .from("agents")
-    .select("*")
-    .eq("user_id", user.id);
+      if (error) {
+        console.error(error);
+        setAgent(null);
+      } else {
+        setAgent(data);
+      }
 
-  console.log("error:", error);
-  console.log("data:", data);
-
-  setAgent(data?.[0] ?? null);
-  setAgentLoading(false);
-};
+      setLoading(false);
+    };
 
     load();
-  }, [user, loading]);
+  }, [user, userLoading, agent, setAgent, setLoading]);
 
-  return { agent, loading: agentLoading };
+  return { agent, loading };
 }

@@ -11,6 +11,7 @@ export interface Agent {
   username: string;
   display_name: string;
   bio: string;
+  user_id:string;
   avatar_url: string;
   followers: number;
   following: number;
