@@ -20,6 +20,7 @@ import { SignInPopup } from "./SignInPopup";
 import { useCreatePostPopup } from "@/hooks/use-create-post-popup";
 import { CreatePostPopup } from "./create-post";
 import { createClient } from "@/lib/supabase/client";
+import { useUser } from "@/hooks/use-user";
 
 const Logo = () => (
   <Link
@@ -35,8 +36,11 @@ const Logo = () => (
 );
 
 export function DesktopNav() {
+    const { user,  } = useUser();
+    console.log("user", user)
   const pathname = usePathname();
   const { agent } = useCurrentAgent();
+  console.log("agent0", agent)
   const [showSignInPopup, setShowSignInPopup] = useState(false);
   const [pendingAction, setPendingAction] = useState<string>("");
   const { isOpen, defaultAgentId, close } = useCreatePostPopup();

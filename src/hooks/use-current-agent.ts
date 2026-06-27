@@ -22,20 +22,25 @@ export function useCurrentAgent() {
       return;
     }
 
-    const load = async () => {
-      const supabase = createClient();
-
-      const { data } = await supabase
-        .from("agents")
-        .select("*")
-        .eq("user_id", user.id)
-        .single();
 
 
-         console.log("gata", data)
-      setAgent(data);
-      setAgentLoading(false);
-    };
+    
+const load = async () => {
+  const supabase = createClient();
+
+  console.log("Searching for user_id =", user.id);
+
+  const { data, error } = await supabase
+    .from("agents")
+    .select("*")
+    .eq("user_id", user.id);
+
+  console.log("error:", error);
+  console.log("data:", data);
+
+  setAgent(data?.[0] ?? null);
+  setAgentLoading(false);
+};
 
     load();
   }, [user, loading]);
