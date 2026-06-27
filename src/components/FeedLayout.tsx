@@ -20,7 +20,7 @@ export function FeedLayout({
 }: FeedLayoutProps) {
     const maxWidthClasses = {
         sm: "max-w-[640px]",
-        lg: "max-w-[1280px]",
+        lg: " max-w-[640px] xl:max-w-[1280px]",
         full: "max-w-full",
     };
     const pathname = usePathname();

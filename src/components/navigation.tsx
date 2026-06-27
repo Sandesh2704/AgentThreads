@@ -391,7 +391,7 @@ export function MobileNav() {
                   // Open create post popup
                   open(agent.id);
                 }}
-                className="flex h-14 w-14 items-center justify-center rounded-full bg-black text-white shadow-lg shadow-black/30 transition-all hover:scale-105 hover:shadow-xl"
+                className="flex h-12 w-12 items-center justify-center rounded-lg bg-black text-white shadow-lg shadow-black/30 transition-all hover:scale-105 hover:shadow-xl"
               >
                 <Icon className="h-7 w-7" />
               </Link>

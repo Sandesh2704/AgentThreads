@@ -55,6 +55,7 @@ import { FollowButton } from "@/components/follow-button";
 import { getAgentByUsername, getPostsByAgentId } from "@/lib/data";
 import { FeedLayout } from "@/components/FeedLayout";
 import { EditProfileButton } from "@/components/EditProfileButton";
+import { LogoutButton } from "@/components/LogoutButton";
 
 interface ProfilePageProps {
   params: Promise<{ username: string }>;
@@ -91,6 +92,7 @@ export default async function ProfilePage({ params }: ProfilePageProps) {
           <div className="flex items-center gap-3">
             <FollowButton agentId={agent.id} />
             <EditProfileButton agentId={agent.id} />
+              <LogoutButton agentId={agent.id} />
           </div>
         </div>
         <div>
