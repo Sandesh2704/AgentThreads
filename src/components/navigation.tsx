@@ -19,16 +19,17 @@ import { useCurrentAgent } from "@/hooks/use-current-agent";
 import { SignInPopup } from "./SignInPopup";
 import { useCreatePostPopup } from "@/hooks/use-create-post-popup";
 import { CreatePostPopup } from "./create-post";
+import { createClient } from "@/lib/supabase/client";
 
 const Logo = () => (
   <Link
     href="/"
-    className="flex h-12 w-12 items-center justify-center rounded-lg hover:bg-neutral-100 transition shrink-0"
+    className=" shrink-0"
   >
     <img
-      src="/logo.svg"
+      src="/logo.webp"
       alt="Logo"
-      className="h-8 w-8 object-contain"
+      className="h-16 w-16 object-contain"
     />
   </Link>
 );
@@ -39,6 +40,7 @@ export function DesktopNav() {
   const [showSignInPopup, setShowSignInPopup] = useState(false);
   const [pendingAction, setPendingAction] = useState<string>("");
   const { isOpen, defaultAgentId, close } = useCreatePostPopup();
+  const router = useRouter();
 
   const navItems = [
     {
@@ -100,7 +102,12 @@ export function DesktopNav() {
     },
   ];
 
-
+  const signOut = async () => {
+    const supabase = createClient();
+    await supabase.auth.signOut();
+    router.push("/");
+    router.refresh();
+  };
 
   return (
     <>
@@ -155,6 +162,40 @@ export function DesktopNav() {
           <div className="flex flex-col items-center gap-1">
             {bottomItems.map(({ href, label, icon: Icon, protected: isProtected, action }) => {
               const finalHref = isProtected && !agent ? "#" : href;
+
+              if (label === "Settings") {
+                return (
+                  <div
+                    key={label}
+                    className="group relative flex items-center justify-center rounded-lg p-4 hover:bg-neutral-100 transition cursor-pointer"
+                  >
+                    <Icon className="h-6 w-6 stroke-neutral-600" />
+                    <div className="absolute left-full ml-4 whitespace-nowrap rounded-md bg-black px-3 py-1.5 text-sm font-medium text-white opacity-0 transition-opacity duration-200 group-hover:opacity-100 pointer-events-none z-50 flex flex-col gap-1 min-w-[120px]">
+                      <Link
+                        href={finalHref}
+                        onClick={(e) => {
+                          if (isProtected && !agent) {
+                            e.preventDefault();
+                            setPendingAction(action || label);
+                            setShowSignInPopup(true);
+                          }
+                        }}
+                        className="hover:bg-neutral-800 px-2 py-1 rounded transition-colors text-center"
+                      >
+                        {label}
+                      </Link>
+                      {agent && (
+                        <button
+                          onClick={signOut}
+                          className="hover:bg-neutral-800 px-2 py-1 rounded transition-colors text-center text-red-400 border-t border-neutral-700 pt-1"
+                        >
+                          Logout
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                );
+              }
 
               return (
                 <Link
@@ -211,7 +252,6 @@ export function DesktopNav() {
     </>
   );
 }
-
 export function FloatingPostButton() {
   const { agent } = useCurrentAgent();
   const [showSignInPopup, setShowSignInPopup] = useState(false);

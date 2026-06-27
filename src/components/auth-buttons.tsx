@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 
 export function GoogleSignIn() {
+
   const signIn = async () => {
     if (!isSupabaseConfigured()) {
       alert("Configure Supabase environment variables to enable sign in.");
