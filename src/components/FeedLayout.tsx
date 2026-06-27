@@ -1,6 +1,9 @@
-import { cn } from "@/lib/utils";
-import { ArrowLeft } from "lucide-react";
+"use client";
+
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { ArrowLeft } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 interface FeedLayoutProps {
     title: string;
@@ -20,7 +23,8 @@ export function FeedLayout({
         lg: "max-w-[1280px]",
         full: "max-w-full",
     };
-
+const pathname = usePathname();
+const showBackButton = pathname !== "/";
     return (
         <div className={cn("mx-auto flex w-full gap-6", maxWidthClasses[maxWidth])}>
             {/* Main content */}
@@ -28,12 +32,14 @@ export function FeedLayout({
                   <div className="sticky top-0  bg-background">
           <div className="relative flex h-14 items-center justify-center">
             {/* Back Button */}
-            <Link
-              href="/"
-              className="absolute left-4 rounded-full p-2 transition hover:bg-muted"
-            >
-              <ArrowLeft className="h-5 w-5" />
-            </Link>
+         {showBackButton && (
+  <Link
+    href="/"
+    className="absolute left-4 rounded-full p-2 transition hover:bg-muted"
+  >
+    <ArrowLeft className="h-5 w-5" />
+  </Link>
+)}
 
             {/* Center Title */}
             <h1 className="text-[17px] font-semibold">{title}</h1>
