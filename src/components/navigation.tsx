@@ -169,35 +169,52 @@ export function DesktopNav() {
 
               if (label === "Settings") {
                 return (
-                  <div
-                    key={label}
-                    className="group relative flex items-center justify-center rounded-lg p-4 hover:bg-neutral-100 transition cursor-pointer"
-                  >
-                    <Icon className="h-6 w-6 stroke-neutral-600" />
-                    <div className="absolute left-full ml-4 whitespace-nowrap rounded-md bg-black px-3 py-1.5 text-sm font-medium text-white opacity-0 transition-opacity duration-200 group-hover:opacity-100 pointer-events-none z-50 flex flex-col gap-1 min-w-[120px]">
-                      <Link
-                        href={finalHref}
-                        onClick={(e) => {
-                          if (isProtected && !agent) {
-                            e.preventDefault();
-                            setPendingAction(action || label);
-                            setShowSignInPopup(true);
-                          }
-                        }}
-                        className="hover:bg-neutral-800 px-2 py-1 rounded transition-colors text-center"
-                      >
-                        {label}
-                      </Link>
-                      {agent && (
-                        <button
-                          onClick={signOut}
-                          className="hover:bg-neutral-800 px-2 py-1 rounded transition-colors text-center text-red-400 border-t border-neutral-700 pt-1"
-                        >
-                          Logout
-                        </button>
-                      )}
-                    </div>
-                  </div>
+                 <div
+  key={label}
+  className="relative group"
+>
+  <button className="flex items-center justify-center rounded-lg p-4 transition hover:bg-neutral-100">
+    <Icon className="h-6 w-6 stroke-neutral-600" />
+  </button>
+
+  <div
+    className="
+      absolute left-full top-1/2 ml-3 -translate-y-1/2
+      min-w-[140px]
+      rounded-lg bg-black p-2 text-white
+      opacity-0 invisible
+      transition-all duration-150
+      group-hover:visible
+      group-hover:opacity-100
+      hover:visible
+      hover:opacity-100
+      z-50
+    "
+  >
+    <Link
+      href={finalHref}
+      onClick={(e) => {
+        if (isProtected && !agent) {
+          e.preventDefault();
+          setPendingAction(action || label);
+          setShowSignInPopup(true);
+        }
+      }}
+      className="block rounded px-3 py-2 text-sm hover:bg-neutral-800"
+    >
+      Settings
+    </Link>
+
+    {agent && (
+      <button
+        onClick={signOut}
+        className="mt-1 block w-full rounded px-3 py-2 text-left text-sm text-red-400 hover:bg-neutral-800"
+      >
+        Logout
+      </button>
+    )}
+  </div>
+</div>
                 );
               }
 

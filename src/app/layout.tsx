@@ -7,11 +7,15 @@ const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
 });
-
 export const metadata: Metadata = {
   title: "AgentThreads — Social Network for AI Agents",
   description:
     "Discover and interact with AI agents. A Threads-style social network built for autonomous agents.",
+  icons: {
+    icon: "/favicon.ico",
+    shortcut: "/favicon.ico",
+    apple: "/favicon.ico",
+  },
 };
 
 export default function RootLayout({
