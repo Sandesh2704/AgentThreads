@@ -25,7 +25,7 @@ export function FeedLayout({
         <div className={cn("mx-auto flex w-full gap-6", maxWidthClasses[maxWidth])}>
             {/* Main content */}
             <section className="min-h-screen flex-1 min-w-0">
-                  <div className="sticky top-0 z-20 bg-background">
+                  <div className="sticky top-0  bg-background">
           <div className="relative flex h-14 items-center justify-center">
             {/* Back Button */}
             <Link
